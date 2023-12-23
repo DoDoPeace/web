@@ -4,11 +4,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/", // 默认路由
-    redirect: "/home",    
+    redirect: "/search",    
   },
   {
-    path: "/home", //  home页面
-    component: () => import("../views/home/index.vue"),
+    path: "/search", //  home页面
+    component: () => import("../views/search/index.vue"),
   },
 
 ];
