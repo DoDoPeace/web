@@ -64,7 +64,7 @@ if(localStorage.getItem('sister') !== '1'){
   localStorage.setItem('sister', '1')
 }
 function searchBlur(){
-  if(searchWord.value === '妹妹说紫色很有韵味！'){
+  if(searchWord.value === '妹妹说紫色很有韵味！꒰ᐢ⸝⸝•༝•⸝⸝ᐢ꒱ '){
     searchWord.value = '';
   }
 }
