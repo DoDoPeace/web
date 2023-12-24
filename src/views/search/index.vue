@@ -4,7 +4,7 @@
     <img class="bgbox" src="https://cn.bing.com/th?id=OHR.FestivusPenguins_ZH-CN5191348531_UHD.jpg&rf=LaDigue_1920x1080.jpg&pid=hp" alt="">
     <div class="cover" style="opacity: 1;"></div>
     <div class="searchBar" @click="searchBlur">
-      <input type="text" v-model="searchWord" class="searchWord" placeholder="搜索" @keyup.enter="linkSearch" >
+      <input type="text" v-model.trim="searchWord" class="searchWord" :placeholder="'距离元旦还剩 ' +countdown+' 天'" @keyup.enter="linkSearch" >
     </div>
     <div class="textContent" :style="{'opacity': timeDisable ? '1' : '0'}">
       <!-- <p>{{ `「 ${textContent}」` }}</p> -->
@@ -25,6 +25,7 @@ const timeDisable = ref<boolean>(false);
 const textContent = ref<string>('');
 const textAuth = ref<string>('');
 const textTitle = ref<string>('');
+const countdown = ref<number | null>(null);
 
 function timeChange() {
   let now = dayjs();
@@ -68,6 +69,16 @@ function searchBlur(){
     searchWord.value = '';
   }
 }
+
+// 倒计时
+const createCountdown = () => {
+  const targetDate:any = new Date('2024-01-01T00:00:00+08:00');
+  const currentDate:any = new Date();
+  const diffTime = targetDate - currentDate;
+  const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  countdown.value = days;
+};
+createCountdown();
 
 </script>
 <style lang="scss" scoped>
