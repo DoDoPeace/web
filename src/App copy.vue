@@ -4,7 +4,6 @@ import { useCounterStore } from '@/store/counter';
 const counterStore = useCounterStore();
 
 </script>
-
 <template>
   <div>
     <a href="https://vitejs.dev" target="_blank">

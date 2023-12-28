@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="time" :style="{'opacity': timeDisable ? '1' : '0'}">{{ `${hour}:${minute}`}}</div>
-    <img class="bgbox" src="https://cn.bing.com/th?id=OHR.FestivusPenguins_ZH-CN5191348531_UHD.jpg&rf=LaDigue_1920x1080.jpg&pid=hp" alt="">
+    <img class="bgbox" src="../../assets/bg.webp" alt="">
     <div class="cover" style="opacity: 1;"></div>
     <div class="searchBar" @click="searchBlur">
       <input type="text" v-model.trim="searchWord" class="searchWord" :placeholder="'距离元旦还剩 ' +countdown+' 天'" @keyup.enter="linkSearch" >
@@ -79,6 +79,8 @@ const createCountdown = () => {
   countdown.value = days;
 };
 createCountdown();
+
+
 
 </script>
 <style lang="scss" scoped>
