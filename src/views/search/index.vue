@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <div class="time" :style="{'opacity': timeDisable ? '1' : '0'}">{{ `${hour}:${minute}`}}</div>
-    <img class="bgbox" src="../../assets/bg.webp" alt="">
+    <img class="bgbox" src="https://tenapi.cn/acg" alt="">
     <div class="cover" style="opacity: 1;"></div>
     <div class="searchBar" @click="searchBlur">
-      <input type="text" v-model.trim="searchWord" class="searchWord" :placeholder="'距离元旦还剩 ' +countdown+' 天'" @keyup.enter="linkSearch" >
+      <input type="text" v-model.trim="searchWord" class="searchWord" :placeholder="'距离除夕还剩 ' +countdown+' 天'" @keyup.enter="linkSearch" >
     </div>
     <div class="textContent" :style="{'opacity': timeDisable ? '1' : '0'}">
       <!-- <p>{{ `「 ${textContent}」` }}</p> -->
@@ -72,7 +72,7 @@ function searchBlur(){
 
 // 倒计时
 const createCountdown = () => {
-  const targetDate:any = new Date('2024-01-01T00:00:00+08:00');
+  const targetDate:any = new Date('2024-02-10T00:00:00+08:00');
   const currentDate:any = new Date();
   const diffTime = targetDate - currentDate;
   const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -149,7 +149,7 @@ createCountdown();
     object-fit: cover; /* 设置为 cover 时，图片会自动填充其容器，并保持比例 */
     width: 100%; /* 设置图片的宽度为 100% */
     height: 100vh; /* 设置图片的高度为自动 */
-    z-index: -3;
+    z-index: 0;
     position: fixed;
     
   }
@@ -187,10 +187,10 @@ createCountdown();
           width: 100%;
           height: 100%;
           font-size: 15px;
-          color: #7a3db0;
+          color: #ffffff;
           // padding: 0 20px;
           // color: inherit;
-          // background-color: red;
+          // background-color: red;ß
           // font-size: 14px;
           // text-align: center;
           // z-index:99
