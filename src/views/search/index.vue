@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="time" :style="{'opacity': timeDisable ? '1' : '0'}">{{ `${hour}:${minute}`}}</div>
-    <img class="bgbox" src="https://tenapi.cn/acg" alt="">
+    <img class="bgbox" src="@/assets/bg.jpeg" alt="">
     <div class="cover" style="opacity: 1;"></div>
     <div class="searchBar" @click="searchBlur">
       <input type="text" v-model.trim="searchWord" class="searchWord" :placeholder="'距离除夕还剩 ' +countdown+' 天'" @keyup.enter="linkSearch" >
@@ -9,6 +9,12 @@
     <div class="textContent" :style="{'opacity': timeDisable ? '1' : '0'}">
       <!-- <p>{{ `「 ${textContent}」` }}</p> -->
       <p>{{  textContent }}</p>
+      <div>
+        <div style="display: flex;margin-top: 20px;font-size: 13px;color: rgba(255, 255, 255, 0.67);">
+          <div>——&nbsp{{ textAuth || '佚名' }}</div>
+          <div>《{{ textTitle }}》</div>
+        </div>
+      </div>
     </div>
     <!-- // 下雪效果 -->
     <div v-for="item of 300" :key="item" class="snowflake"></div>
@@ -40,7 +46,7 @@ setTimeout(() => {
 
 // 请求第三方接口
 function getText(){
-  fetch('https://v1.hitokoto.cn/?c=i&encode=json', {  
+  fetch('https://v1.hitokoto.cn/?c=l&c=h&c=i&c=j&c=k&c=e&c=f', {  
   method: 'GET', // or 'POST'  
   headers: {  
     'Content-Type': 'application/json',  
