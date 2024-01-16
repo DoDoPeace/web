@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <div class="time" :style="{'opacity': timeDisable ? '1' : '0'}">{{ `${hour}:${minute}`}}</div>
-    <img class="bgbox" src="@/assets/bg.jpeg" alt="">
+    <img :class="['bgbox',isFocus ? 'bgboxFilter' : '' ]" src="@/assets/bg.webp" alt="">
     <div class="cover" style="opacity: 1;"></div>
     <div class="searchBar" @click="searchBlur">
-      <input type="text" v-model.trim="searchWord" class="searchWord" :placeholder="'距离除夕还剩 ' +countdown+' 天'" @keyup.enter="linkSearch" >
+      <input type="text" v-model.trim="searchWord" class="searchWord" :placeholder="place" @keyup.enter="linkSearch" @focus="focusEvent" @blur="unfocus">
     </div>
     <div class="textContent" :style="{'opacity': timeDisable ? '1' : '0'}">
       <!-- <p>{{ `「 ${textContent}」` }}</p> -->
@@ -17,7 +17,7 @@
       </div>
     </div>
     <!-- // 下雪效果 -->
-    <div v-for="item of 300" :key="item" class="snowflake"></div>
+    <!-- <div v-for="item of 300" :key="item" class="snowflake"></div> -->
       
 </div>
 </template>
@@ -27,7 +27,9 @@ import dayjs from 'dayjs'
 const hour = ref<number | null | string>(null);
 const minute = ref<number | null | string>(null);
 const searchWord = ref<string>('');
+const place = ref<string>('');
 const timeDisable = ref<boolean>(false);
+const isFocus = ref<boolean>(false);
 const textContent = ref<string>('');
 const textAuth = ref<string>('');
 const textTitle = ref<string>('');
@@ -83,10 +85,18 @@ const createCountdown = () => {
   const diffTime = targetDate - currentDate;
   const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   countdown.value = days;
+  place.value  = '距离除夕还剩 ' +countdown.value+' 天'
 };
 createCountdown();
 
-
+const focusEvent = () =>  {
+  isFocus.value = true;
+  place.value  = ''
+}
+const unfocus = () =>  {
+  isFocus.value = false;
+  place.value  = '距离除夕还剩 ' +countdown.value+' 天'
+}
 
 </script>
 <style lang="scss" scoped>
@@ -157,7 +167,11 @@ createCountdown();
     height: 100vh; /* 设置图片的高度为自动 */
     z-index: 0;
     position: fixed;
-    
+    transition: .3s;
+  }
+  .bgboxFilter {
+    transform: scale(1.05);
+    filter: blur(6px);
   }
   .cover {
     z-index: 0;
@@ -169,6 +183,13 @@ createCountdown();
     background-image: radial-gradient(rgba(0,0,0,0) 0,rgba(0, 0, 0, 0.655) 100%),radial-gradient(rgba(0,0,0,.1) 33%,rgba(0,0,0,.3) 166%);
     transition: .25s;
   }
+
+    input::-webkit-input-placeholder {
+        /* placeholder颜色 */
+        color: #ffffff;
+        /* placeholder字体大小 */
+        font-size: 12px;
+    }
   .searchBar {
     position: absolute;
     top: 200px;
