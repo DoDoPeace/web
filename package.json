@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ant-design-vue": "4.x",
+    "axios": "^1.6.5",
     "dayjs": "^1.11.10",
     "pinia": "^2.1.7",
     "sass": "^1.69.5",
@@ -17,7 +19,7 @@
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
+    "@types/node": "^20.11.3",
     "@vitejs/plugin-vue": "^4.5.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
