@@ -208,7 +208,7 @@ let now:any = new Date();
   let secondsLeft = Math.floor((diff / 1000) % 60);  
   isShowTime.value = hoursLeft <=8 && hoursLeft >= 0 ? true : false
   // 输出倒计时结果  
-  goHomeTime.value = "距离下班还有 " +  hoursLeft + " : " + minutesLeft + " : " + secondsLeft
+  goHomeTime.value = "🚶🚶🚶 🚇 🏡 => " +  hoursLeft + " : " + minutesLeft + " : " + secondsLeft
   
 }
 setInterval(goHome, 1000);
@@ -254,8 +254,8 @@ onMounted(() => {
 })
 watch(maskNum , (newVal) => {
   console.log('newVal',newVal);
-  
-  cover.value.style.opacity = ( +newVal  / 10);
+  let newvalue:any = newVal;
+  cover.value.style.opacity = (  +newvalue  / 10);
 })
 </script>
 <style lang="scss" scoped>
@@ -402,7 +402,7 @@ watch(maskNum , (newVal) => {
     position: fixed;
     bottom: 20px;
     left: 90%;
-    color: #fbbe0880;
+    color: #ffffff77;
     transform: translateX(-50%);
   }
   .textContent {
