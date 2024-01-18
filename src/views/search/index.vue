@@ -101,7 +101,7 @@ const open = ref<boolean>(false);
 const activeKey = ref<string>('1');
 const cover = ref<any>(null);
 const currentIndex = ref<number | null>(null);
-const currentUrl = ref<string>('');
+const currentUrl = ref<string>('https://www.baidu.com/s?ie=utf-8&word=');
 const goHomeTime = ref<string>('');
 const visible = ref<boolean>(false);
 const isShowTime = ref<boolean>(false);
