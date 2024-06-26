@@ -10,6 +10,14 @@ const routes: Array<RouteRecordRaw> = [
     path: "/search", //  home页面
     component: () => import("../views/search/index.vue"),
   },
+  {
+    path: "/children", //  home页面
+    component: () => import("../views/children/index.vue"),
+  },
+  {
+    path: "/fenjie", //  home页面
+    component: () => import("../views/fenjie/index.vue"),
+  },
 
 ];
 // 2.返回一个 router 实列，为函数，配置 history 模式

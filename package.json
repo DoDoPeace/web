@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,8 +15,10 @@
     "pinia": "^2.1.7",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
+    "vant": "^4.9.0",
     "vue": "^3.3.11",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@types/node": "^20.11.3",

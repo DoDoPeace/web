@@ -6,3 +6,7 @@ declare module "*.vue" {
  
   export default vueComponent;
 }
+
+declare interface Window {
+  baidu:any
+}

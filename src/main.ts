@@ -9,6 +9,7 @@ const app = createApp(App)
 
 const pinia = createPinia()
 import router from "@/router/index" // 引入router
-
-app.use(pinia).use(router).use(Antd)
+import Vant from 'vant';
+import 'vant/lib/index.css';
+app.use(Vant).use(pinia).use(router).use(Antd)
 .mount('#app')
