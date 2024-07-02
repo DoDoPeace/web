@@ -218,29 +218,43 @@
               padding: 14px 14px 50px;
               overflow-y: auto;
             " ref="chatContainer">
-            <div class="chat" v-for="(item, index) in chatData" :key="index">
-              {{ item.message }}
+            <div class="chat" v-for="(item, index) in chatData" :key="index" >
+              <div style="font-size: 15px;">
+                {{ item.message }}
+              </div>
             </div>
           </div>
+          <EmojiPicker v-if="isShowEmoji" :native="true" @select="onSelectEmoji" theme="dark" style="width: 100%;position: absolute;left: 0;top: 250px;" hide-search/>
           <a-input v-model:value="chatContent" @keyup.enter.native="sendMessage"
-            style="background-color: transparent; color: #fff; margin-top: 10px" />
+            style="background-color: transparent; color: #fff; margin-top: 10px" @focus.prevent.stop="isShowEmoji = false">
+            <template #prefix >
+              <smile-outlined @click.prevent.stop="isShowEmoji = true" style="margin-right: 10px;font-size: 18px;"/>
+            </template>
+            <template #suffix>
+              <!-- <a-tooltip title="发送 🚀🚀🚀"> -->
+                <send-outlined style="color: #fff;transform: rotate(-45deg);font-size: 18px;margin-bottom: 4px;" @click="sendMessage"/>
+              <!-- </a-tooltip> -->
+            </template>
+          </a-input>
         </a-tab-pane>
       </a-tabs>
     </a-drawer>
     <!-- // 下雪效果 -->
     <!-- <div v-for="item of 300" :key="item" class="snowflake"></div> -->
+    
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch, reactive,watchEffect } from "vue";
+// import EmojiPicker from 'vue-emoji-picker';
+import { onMounted, ref, watch, reactive } from "vue";
 import dayjs from 'dayjs'
 // import  { userQuery }  from '@/api/user.ts'
 import { message } from 'ant-design-vue';
 import Icon, {
-  HomeOutlined,WechatOutlined
+  HomeOutlined,WechatOutlined,SmileOutlined,SendOutlined
 } from '@ant-design/icons-vue';
 import axios from "axios";
-import bgpng from '@/assets/bg.webp'
+import bgpng from '@/assets/bg.webp';
 const hour = ref<number | null | string>(null);
 const minute = ref<number | null | string>(null);
 const searchWord = ref<string>('');
@@ -261,6 +275,7 @@ const goHomeTime = ref<string>('');
 const visible = ref<boolean>(false);
 const isSend = ref<boolean>(false);
 const isShowTime = ref<boolean>(false);
+const isShowEmoji = ref<boolean>(false);
 const successBroard = ref<boolean>(false);
 const bgUrl = ref<string | null | Promise<any>>('');
 const hotSearch = ref<any>([])
@@ -305,8 +320,8 @@ const afterOpenChange = (bool: boolean) => {
 };
 
 const showDrawer = () => {
+  activeKey.value = '1'
   open.value = true;
-  
 };
 
 function timeChange() {
@@ -380,6 +395,13 @@ function searchBlur() {
 const file = ref<any>(null);
 function uploadImg() {
   file.value.click();
+}
+
+// emoji
+const onSelectEmoji = (emoji:any) => {
+  console.log('emoji',emoji);
+  chatContent.value += emoji.i
+  
 }
 
 const fileToBase64 = (file: Blob) => {
@@ -609,15 +631,25 @@ socket.onopen = () => {
   
   // 设置消息接收处理函数
   socket.onmessage = (event) => {
-    if(!open.value){
-      isPoint.value = true
-    }
-   
     const message = event.data;
     console.log('Received message: ', message); // 确保接收到消息
-    JSON.parse(message).forEach((item: any) => {
+    const jspMsg = JSON.parse(message)
+    console.log('11',jspMsg[jspMsg.length - 1].message );
+    console.log('localStorage.getItem()',localStorage.getItem('lastMsgId') );
+    
+    
+    let isLastMsg = jspMsg[jspMsg.length - 1].message == localStorage.getItem('lastMsgId') ? true : false
+    console.log('isLastMsg',isLastMsg);
+    
+    if(!isLastMsg && !open.value){
+      isPoint.value = true
+    }
+
+
+    jspMsg.forEach((item: any) => {
       chatData.value.push(item)
     })
+    
     if(chatContainer.value){
       chatContainer.value.scrollTo({
         top: chatContainer.value.scrollHeight - 100,
@@ -636,6 +668,7 @@ socket.onopen = () => {
 };
 
 socket.onerror = (error) => {
+  message.error('服务中断，请稍后重试！')
   console.error('WebSocket error: ', error);
 };
 
@@ -653,7 +686,13 @@ socket.onerror = (error) => {
 //   }
 // });
 const sendMessage = () => {
+  if(!chatContent.value) {
+    message.warning('请输入内容')
+    return
+  }
   socket.send(chatContent.value);
+  isShowEmoji.value = false
+  localStorage.setItem('lastMsgId', chatContent.value)
   chatContent.value = '';
 }
 
@@ -662,6 +701,7 @@ const showChat = () => {
 isPoint.value = false
 open.value = true
 activeKey.value = '6'
+localStorage.setItem('lastMsgId', chatData.value[chatData.value.length - 1].message)
 setTimeout( () => {
   if(chatContainer.value){
       chatContainer.value.scrollTo({
@@ -1055,5 +1095,13 @@ setTimeout( () => {
   color: rgb(255, 255, 255) !important;
   text-shadow: 0 0 2px rgb(255, 255, 255);
   margin-bottom: 8px;
+}
+::v-deep .ant-input {
+  background-color: transparent !important;
+  color: #ffffff;
+  font-size: 15px !important; 
+}
+::v-deep .v3-footer, .v3-sticky {
+  display: none !important;
 }
 </style>

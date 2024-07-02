@@ -14,6 +14,8 @@
     "noEmit": true,
     "jsx": "preserve",
 
+    "types": ["vue3-emoji"],
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
