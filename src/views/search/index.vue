@@ -94,7 +94,9 @@
     <!-- 注册 -->
     <div style="display: flex; justify-content: end; padding: 30px 40px">
       <wechat-outlined :rotate="1"  style="color: rgba(240, 248, 255, 0.639);font-size: 18px;margin-right:20px " @click="showChat" :class="[isPoint ? 'point' : '']"/>
-      <home-outlined :rotate="1" style="color: rgba(240, 248, 255, 0.639); font-size: 18px" @click="showDrawer" />
+      <edit-outlined :rotate="1" style="color: rgba(240, 248, 255, 0.639); font-size: 18px;margin-right:20px"  @click="linkPage" />
+      <home-outlined :rotate="1" style="color: rgba(240, 248, 255, 0.639); font-size: 18px;margin-right:20px" @click="showDrawer"/>
+      <user-outlined :rotate="1" style="color: rgba(240, 248, 255, 0.639); font-size: 18px" @click="showDrawer"/>
     </div>
     <a-drawer v-model:open="open" class="custom-class" root-class-name="root-class-name" :root-style="{ color: 'blue' }"
       style="
@@ -162,7 +164,34 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="5" tab="设置">
+        <a-tab-pane key="5" tab="聊天室">
+          <div style="
+              width: 100%;
+              height: 70vh;
+              border: 1px solid #bbb;
+              padding: 14px 14px 50px;
+              overflow-y: auto;
+            " ref="chatContainer">
+            <div class="chat" v-for="(item, index) in chatData" :key="index" >
+              <div style="font-size: 15px;">
+                {{ item.message }}
+              </div>
+            </div>
+          </div>
+          <EmojiPicker v-if="isShowEmoji" :native="true" @select="onSelectEmoji" theme="dark" style="width: 100%;position: absolute;left: 0;top: 250px;" hide-search/>
+          <a-input v-model:value="chatContent" @keyup.enter.native="sendMessage"
+            style="background-color: transparent; color: #fff; margin-top: 10px" @focus.prevent.stop="isShowEmoji = false">
+            <template #prefix >
+              <smile-outlined @click.prevent.stop="isShowEmoji = true" style="margin-right: 10px;font-size: 18px;"/>
+            </template>
+            <template #suffix>
+              <!-- <a-tooltip title="发送 🚀🚀🚀"> -->
+                <send-outlined style="color: #fff;transform: rotate(-45deg);font-size: 18px;margin-bottom: 4px;" @click="sendMessage"/>
+              <!-- </a-tooltip> -->
+            </template>
+          </a-input>
+        </a-tab-pane>
+        <a-tab-pane key="6" tab="设置">
           <div style="color: rgb(255, 255, 255)">
             <div>遮罩百分比</div>
             <a-slider v-model:value="maskNum" :min="0" :max="10" :tooltipOpen="false" />
@@ -210,33 +239,7 @@
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="6" tab="同城交友">
-          <div style="
-              width: 100%;
-              height: 70vh;
-              border: 1px solid #bbb;
-              padding: 14px 14px 50px;
-              overflow-y: auto;
-            " ref="chatContainer">
-            <div class="chat" v-for="(item, index) in chatData" :key="index" >
-              <div style="font-size: 15px;">
-                {{ item.message }}
-              </div>
-            </div>
-          </div>
-          <EmojiPicker v-if="isShowEmoji" :native="true" @select="onSelectEmoji" theme="dark" style="width: 100%;position: absolute;left: 0;top: 250px;" hide-search/>
-          <a-input v-model:value="chatContent" @keyup.enter.native="sendMessage"
-            style="background-color: transparent; color: #fff; margin-top: 10px" @focus.prevent.stop="isShowEmoji = false">
-            <template #prefix >
-              <smile-outlined @click.prevent.stop="isShowEmoji = true" style="margin-right: 10px;font-size: 18px;"/>
-            </template>
-            <template #suffix>
-              <!-- <a-tooltip title="发送 🚀🚀🚀"> -->
-                <send-outlined style="color: #fff;transform: rotate(-45deg);font-size: 18px;margin-bottom: 4px;" @click="sendMessage"/>
-              <!-- </a-tooltip> -->
-            </template>
-          </a-input>
-        </a-tab-pane>
+ 
       </a-tabs>
     </a-drawer>
     <!-- // 下雪效果 -->
@@ -251,7 +254,7 @@ import dayjs from 'dayjs'
 // import  { userQuery }  from '@/api/user.ts'
 import { message } from 'ant-design-vue';
 import Icon, {
-  HomeOutlined,WechatOutlined,SmileOutlined,SendOutlined
+  HomeOutlined,WechatOutlined,SmileOutlined,SendOutlined,EditOutlined,UserOutlined
 } from '@ant-design/icons-vue';
 import axios from "axios";
 import bgpng from '@/assets/bg.webp';
@@ -323,6 +326,9 @@ const showDrawer = () => {
   activeKey.value = '1'
   open.value = true;
 };
+const linkPage = () => {
+ window.open('https://excalidraw.com/')
+};
 
 function timeChange() {
   let now = dayjs();
@@ -345,7 +351,6 @@ getBgUrl()
 function getText() {
   axios.get('https://api.vvhan.com/api/ian/shici?type=json')
     .then(response => {
-
       textContent.value = response.data.data.content;
       textTitle.value = response.data.data.form;
     })
@@ -700,7 +705,7 @@ const isPoint = ref<boolean>(false)
 const showChat = () => {
 isPoint.value = false
 open.value = true
-activeKey.value = '6'
+activeKey.value = '5'
 localStorage.setItem('lastMsgId', chatData.value[chatData.value.length - 1].message)
 setTimeout( () => {
   if(chatContainer.value){

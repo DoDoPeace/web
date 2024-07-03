@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const userQuery = (data:object) => {
+export const userReguser = (data:object) => {
     return axios({
       url: '/api/reguser',
       method: 'post',
